@@ -1,5 +1,5 @@
 <?php
-// Conectar con la base de datos
+
 $conexion = new mysqli('localhost', 'usuario', 'contraseña', 'dragon_ultima_foro');
 
 if ($conexion->connect_error) {
@@ -7,14 +7,14 @@ if ($conexion->connect_error) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tema_id = intval($_POST['tema_id']);
+    $titulo = $conexion->real_escape_string($_POST['titulo']);
     $contenido = $conexion->real_escape_string($_POST['contenido']);
 
-    $sql = "INSERT INTO comentarios (tema_id, contenido) VALUES ('$tema_id', '$contenido')";
+    $sql = "INSERT INTO temas (titulo, contenido) VALUES ('$titulo', '$contenido')";
 
     if ($conexion->query($sql) === TRUE) {
-        echo "Comentario publicado con éxito";
-        header('Location: tema.php?id=' . $tema_id); // Redirigir de nuevo al tema
+        echo "Nuevo tema creado con éxito";
+        header('Location: foro.php'); // Redirigir al foro
     } else {
         echo "Error: " . $sql . "<br>" . $conexion->error;
     }
